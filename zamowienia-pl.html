@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zamówienie</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="order.css" />
+</head>
+<body>
+
+  <div class="order-wrapper">
+    <a class="back-link" href="pl.html">← Wróć</a>
+
+    <h1 class="order-title">Formularz zamówienia</h1>
+
+    <form id="orderForm" action="https://formspree.io/f/mkopwgyj" method="POST">
+      <input type="hidden" name="_subject" value="Nowe zamówienie ze strony">
+      <input type="hidden" name="_language" value="pl">
+
+      <div class="order-card">
+        <h2>Dane klienta</h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Imię i nazwisko</label>
+            <input type="text" id="fullName" name="fullName" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Numer telefonu</label>
+            <input type="tel" id="phone" name="phone" class="form-input" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="email">Adres e-mail</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="address">Ulica i numer domu / mieszkania</label>
+            <input type="text" id="address" name="address" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="postalCode">Kod pocztowy</label>
+            <input type="text" id="postalCode" name="postalCode" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="city">Miasto</label>
+            <input type="text" id="city" name="city" class="form-input" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Zamówienie</h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="product">Produkt</label>
+            <select id="product" name="product" class="form-select" required>
+              <option value="">Wybierz produkt</option>
+              <option value="Produkt 1">Produkt 1</option>
+              <option value="Produkt 2">Produkt 2</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="quantity">Ilość</label>
+            <select id="quantity" name="quantity" class="form-select" required>
+              <option value="1">1 szt.</option>
+              <option value="2">2 szt.</option>
+              <option value="3">3 szt.</option>
+              <option value="4">4 szt.</option>
+              <option value="5">5 szt.</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="notes">Uwagi do zamówienia</label>
+            <textarea id="notes" name="notes" class="form-textarea" placeholder="Np. dodatkowe informacje do zamówienia"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Sposób dostawy</h2>
+
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Kurier" required>
+            <span>Kurier</span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Paczkomat">
+            <span>Paczkomat</span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Odbiór osobisty">
+            <span>Odbiór osobisty</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Metoda płatności</h2>
+
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="payment" value="BLIK" required>
+            <span>BLIK</span>
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="payment" value="Przelew">
+            <span>Przelew bankowy</span>
+          </label>
+        </div>
+
+        <div class="payment-box" id="blikBox">
+          <h3>Płatność BLIK</h3>
+          <p>Wyślij płatność na numer telefonu:</p>
+          <div class="payment-number">123 456 789</div>
+          <p class="payment-note">W tytule wpisz imię, nazwisko i nazwę produktu.</p>
+        </div>
+
+        <div class="payment-box" id="bankBox">
+          <h3>Płatność przelewem</h3>
+          <p>Wyślij przelew na numer konta:</p>
+          <div class="payment-number">12 3456 7890 1234 5678 9012 3456</div>
+          <p class="payment-note">W tytule wpisz imię, nazwisko i nazwę produktu.</p>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Podsumowanie</h2>
+
+        <div class="summary-line">
+          <span>Produkt:</span>
+          <strong id="summaryProduct">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Ilość:</span>
+          <strong id="summaryQuantity">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Dostawa:</span>
+          <strong id="summaryDelivery">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Płatność:</span>
+          <strong id="summaryPayment">—</strong>
+        </div>
+
+        <button type="submit" class="order-submit">Złóż zamówienie</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const product = document.getElementById("product");
+    const quantity = document.getElementById("quantity");
+    const deliveryInputs = document.querySelectorAll('input[name="delivery"]');
+    const paymentInputs = document.querySelectorAll('input[name="payment"]');
+
+    const summaryProduct = document.getElementById("summaryProduct");
+    const summaryQuantity = document.getElementById("summaryQuantity");
+    const summaryDelivery = document.getElementById("summaryDelivery");
+    const summaryPayment = document.getElementById("summaryPayment");
+
+    const blikBox = document.getElementById("blikBox");
+    const bankBox = document.getElementById("bankBox");
+    const orderForm = document.getElementById("orderForm");
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "—";
+    }
+
+    function updateSummary() {
+      summaryProduct.textContent = product.value || "—";
+      summaryQuantity.textContent = quantity.value || "—";
+      summaryDelivery.textContent = getCheckedValue("delivery");
+      summaryPayment.textContent = getCheckedValue("payment");
+    }
+
+    function updatePaymentBox() {
+      const payment = getCheckedValue("payment");
+
+      blikBox.classList.remove("active");
+      bankBox.classList.remove("active");
+
+      if (payment === "BLIK") {
+        blikBox.classList.add("active");
+      }
+
+      if (payment === "Przelew") {
+        bankBox.classList.add("active");
+      }
+    }
+
+    product.addEventListener("change", updateSummary);
+    quantity.addEventListener("change", updateSummary);
+
+    deliveryInputs.forEach(input => {
+      input.addEventListener("change", updateSummary);
+    });
+
+    paymentInputs.forEach(input => {
+      input.addEventListener("change", () => {
+        updateSummary();
+        updatePaymentBox();
+      });
+    });
+
+    orderForm.addEventListener("submit", () => {
+      updateSummary();
+      updatePaymentBox();
+    });
+
+    updateSummary();
+  </script>
+
+</body>
+</html>

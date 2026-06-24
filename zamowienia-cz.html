@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Objednávka</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="order.css" />
+</head>
+<body>
+
+  <div class="order-wrapper">
+    <a class="back-link" href="cz.html">← Zpět</a>
+
+    <h1 class="order-title">Objednávkový formulář</h1>
+
+    <form id="orderForm" action="https://formspree.io/f/mkopwgyj" method="POST">
+      <input type="hidden" name="_subject" value="Nová objednávka z webu">
+      <input type="hidden" name="_language" value="cs">
+
+      <div class="order-card">
+        <h2>Údaje zákazníka</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Jméno a příjmení</label>
+            <input type="text" id="fullName" name="fullName" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefonní číslo</label>
+            <input type="tel" id="phone" name="phone" class="form-input" required>
+          </div>
+          <div class="form-group full">
+            <label for="email">E-mailová adresa</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group full">
+            <label for="address">Ulice a číslo domu</label>
+            <input type="text" id="address" name="address" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="postalCode">PSČ</label>
+            <input type="text" id="postalCode" name="postalCode" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="city">Město</label>
+            <input type="text" id="city" name="city" class="form-input" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Objednávka</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="product">Produkt</label>
+            <select id="product" name="product" class="form-select" required>
+              <option value="">Vyberte produkt</option>
+              <option value="Produkt 1">Produkt 1</option>
+              <option value="Produkt 2">Produkt 2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Množství</label>
+            <select id="quantity" name="quantity" class="form-select" required>
+              <option value="1">1 ks.</option>
+              <option value="2">2 ks.</option>
+              <option value="3">3 ks.</option>
+              <option value="4">4 ks.</option>
+              <option value="5">5 ks.</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="notes">Poznámky k objednávce</label>
+            <textarea id="notes" name="notes" class="form-textarea" placeholder="Např. další informace k objednávce"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Způsob doručení</h2>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Kurýr" required>
+            <span>Kurýr</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Balíkomat">
+            <span>Balíkomat</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Osobní odběr">
+            <span>Osobní odběr</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Způsob platby</h2>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="payment" value="BLIK" required>
+            <span>BLIK</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="payment" value="Przelew">
+            <span>Bankovní převod</span>
+          </label>
+        </div>
+
+        <div class="payment-box" id="blikBox">
+          <h3>Platba BLIK</h3>
+          <p>Pošlete platbu na telefonní číslo:</p>
+          <div class="payment-number">123 456 789</div>
+          <p class="payment-note">Do poznámky uveďte jméno a název produktu.</p>
+        </div>
+
+        <div class="payment-box" id="bankBox">
+          <h3>Bankovní převod</h3>
+          <p>Pošlete převod na číslo účtu:</p>
+          <div class="payment-number">12 3456 7890 1234 5678 9012 3456</div>
+          <p class="payment-note">Do poznámky uveďte jméno a název produktu.</p>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Shrnutí</h2>
+        <div class="summary-line">
+          <span>Produkt:</span>
+          <strong id="summaryProduct">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Množství:</span>
+          <strong id="summaryQuantity">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Doručení:</span>
+          <strong id="summaryDelivery">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Platba:</span>
+          <strong id="summaryPayment">—</strong>
+        </div>
+        <button type="submit" class="order-submit">Odeslat objednávku</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const product = document.getElementById("product");
+    const quantity = document.getElementById("quantity");
+    const deliveryInputs = document.querySelectorAll('input[name="delivery"]');
+    const paymentInputs = document.querySelectorAll('input[name="payment"]');
+    const summaryProduct = document.getElementById("summaryProduct");
+    const summaryQuantity = document.getElementById("summaryQuantity");
+    const summaryDelivery = document.getElementById("summaryDelivery");
+    const summaryPayment = document.getElementById("summaryPayment");
+    const blikBox = document.getElementById("blikBox");
+    const bankBox = document.getElementById("bankBox");
+    const orderForm = document.getElementById("orderForm");
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "—";
+    }
+
+    function updateSummary() {
+      summaryProduct.textContent = product.value || "—";
+      summaryQuantity.textContent = quantity.value || "—";
+      summaryDelivery.textContent = getCheckedValue("delivery");
+      summaryPayment.textContent = getCheckedValue("payment");
+    }
+
+    function updatePaymentBox() {
+      const payment = getCheckedValue("payment");
+      blikBox.classList.remove("active");
+      bankBox.classList.remove("active");
+      if (payment === "BLIK") blikBox.classList.add("active");
+      if (payment === "Przelew") bankBox.classList.add("active");
+    }
+
+    product.addEventListener("change", updateSummary);
+    quantity.addEventListener("change", updateSummary);
+    deliveryInputs.forEach(i => i.addEventListener("change", updateSummary));
+    paymentInputs.forEach(i => i.addEventListener("change", () => { updateSummary(); updatePaymentBox(); }));
+    orderForm.addEventListener("submit", () => { updateSummary(); updatePaymentBox(); });
+    updateSummary();
+  </script>
+</body>
+</html>

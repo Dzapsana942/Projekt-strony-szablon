@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bestelling</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="order.css" />
+</head>
+<body>
+
+  <div class="order-wrapper">
+    <a class="back-link" href="nl.html">← Terug</a>
+
+    <h1 class="order-title">Bestelformulier</h1>
+
+    <form id="orderForm" action="https://formspree.io/f/mkopwgyj" method="POST">
+      <input type="hidden" name="_subject" value="Nieuwe bestelling van de website">
+      <input type="hidden" name="_language" value="nl">
+
+      <div class="order-card">
+        <h2>Klantgegevens</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fullName">Voor- en achternaam</label>
+            <input type="text" id="fullName" name="fullName" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Telefoonnummer</label>
+            <input type="tel" id="phone" name="phone" class="form-input" required>
+          </div>
+          <div class="form-group full">
+            <label for="email">E-mailadres</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group full">
+            <label for="address">Straat en huisnummer</label>
+            <input type="text" id="address" name="address" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="postalCode">Postcode</label>
+            <input type="text" id="postalCode" name="postalCode" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="city">Stad</label>
+            <input type="text" id="city" name="city" class="form-input" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Bestelling</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="product">Product</label>
+            <select id="product" name="product" class="form-select" required>
+              <option value="">Kies een product</option>
+              <option value="Product 1">Product 1</option>
+              <option value="Product 2">Product 2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Aantal</label>
+            <select id="quantity" name="quantity" class="form-select" required>
+              <option value="1">1 st.</option>
+              <option value="2">2 st.</option>
+              <option value="3">3 st.</option>
+              <option value="4">4 st.</option>
+              <option value="5">5 st.</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="notes">Opmerkingen</label>
+            <textarea id="notes" name="notes" class="form-textarea" placeholder="Bijv. extra informatie over de bestelling"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Bezorgmethode</h2>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Koerier" required>
+            <span>Koerier</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Pakketautomaat">
+            <span>Pakketautomaat</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="delivery" value="Afhalen">
+            <span>Afhalen</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Betaalmethode</h2>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="payment" value="BLIK" required>
+            <span>BLIK</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="payment" value="Przelew">
+            <span>Bankoverschrijving</span>
+          </label>
+        </div>
+
+        <div class="payment-box" id="blikBox">
+          <h3>Betaling BLIK</h3>
+          <p>Stuur betaling naar telefoonnummer:</p>
+          <div class="payment-number">123 456 789</div>
+          <p class="payment-note">Vermeld naam en productnaam in de omschrijving.</p>
+        </div>
+
+        <div class="payment-box" id="bankBox">
+          <h3>Bankoverschrijving</h3>
+          <p>Stuur overschrijving naar rekeningnummer:</p>
+          <div class="payment-number">12 3456 7890 1234 5678 9012 3456</div>
+          <p class="payment-note">Vermeld naam en productnaam in de omschrijving.</p>
+        </div>
+      </div>
+
+      <div class="order-card">
+        <h2>Samenvatting</h2>
+        <div class="summary-line">
+          <span>Product:</span>
+          <strong id="summaryProduct">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Aantal:</span>
+          <strong id="summaryQuantity">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Bezorging:</span>
+          <strong id="summaryDelivery">—</strong>
+        </div>
+        <div class="summary-line">
+          <span>Betaling:</span>
+          <strong id="summaryPayment">—</strong>
+        </div>
+        <button type="submit" class="order-submit">Bestelling plaatsen</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const product = document.getElementById("product");
+    const quantity = document.getElementById("quantity");
+    const deliveryInputs = document.querySelectorAll('input[name="delivery"]');
+    const paymentInputs = document.querySelectorAll('input[name="payment"]');
+    const summaryProduct = document.getElementById("summaryProduct");
+    const summaryQuantity = document.getElementById("summaryQuantity");
+    const summaryDelivery = document.getElementById("summaryDelivery");
+    const summaryPayment = document.getElementById("summaryPayment");
+    const blikBox = document.getElementById("blikBox");
+    const bankBox = document.getElementById("bankBox");
+    const orderForm = document.getElementById("orderForm");
+
+    function getCheckedValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.value : "—";
+    }
+
+    function updateSummary() {
+      summaryProduct.textContent = product.value || "—";
+      summaryQuantity.textContent = quantity.value || "—";
+      summaryDelivery.textContent = getCheckedValue("delivery");
+      summaryPayment.textContent = getCheckedValue("payment");
+    }
+
+    function updatePaymentBox() {
+      const payment = getCheckedValue("payment");
+      blikBox.classList.remove("active");
+      bankBox.classList.remove("active");
+      if (payment === "BLIK") blikBox.classList.add("active");
+      if (payment === "Przelew") bankBox.classList.add("active");
+    }
+
+    product.addEventListener("change", updateSummary);
+    quantity.addEventListener("change", updateSummary);
+    deliveryInputs.forEach(i => i.addEventListener("change", updateSummary));
+    paymentInputs.forEach(i => i.addEventListener("change", () => { updateSummary(); updatePaymentBox(); }));
+    orderForm.addEventListener("submit", () => { updateSummary(); updatePaymentBox(); });
+    updateSummary();
+  </script>
+</body>
+</html>
